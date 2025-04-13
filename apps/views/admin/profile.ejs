@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Cá Nhân</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <link rel="stylesheet" href="/static/css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            <ul>
+                <li><a href="/admin/profile"><i class="fas fa-user"></i><span>Quản lý tài khoản</span></a></li>
+                <% if (user.role === 'admin') { %>
+                    <li><a href="/admin/dashboard"><i class="fas fa-chart-line"></i><span>Bảng điều khiển</span></a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users"></i><span>Quản lý người dùng</span></a></li>
+                <% } %>
+                <li><a href="/admin/posts"><i class="fas fa-file-alt"></i><span>Quản lý bài đăng</span></a></li>
+                <li><a href="http://localhost:3000/"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
+                <li><a href="/user/logout"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a></li>
+            </ul>
+        </div>
+        <div class="main-content" id="main-content">
+            <h2>Thông Tin Cá Nhân</h2>
+            <form class="profile-form" action="/admin/profile" method="POST">
+                <div class="form-group">
+                    <label for="username">Tên người dùng:</label>
+                    <input type="text" id="username" name="username" value="<%= userProfile.username %>" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="<%= userProfile.email %>" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password" value="" placeholder="Nhập mật khẩu mới nếu muốn thay đổi" disabled>
+                </div>
+                <button type="button" id="edit-btn">Sửa</button>
+                <button type="submit" id="update-btn" style="display: none;">Cập nhật</button>
+                <button type="button" id="cancel-btn" style="display: none;">Hủy</button>
+            </form>
+            
+            <% if (error) { %>
+                <div class="message error"><%= error %></div>
+            <% } %>
+            <% if (success) { %>
+                <div class="message success"><%= success %></div>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="/static/js/sidebar.js"></script>
+    <script src="/static/js/profile.js"></script>
+</body>
+</html>

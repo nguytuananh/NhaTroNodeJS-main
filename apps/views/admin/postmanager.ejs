@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Bài Đăng</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            <ul>
+                <li><a href="/admin/profile"><i class="fas fa-user"></i><span>Quản lý tài khoản</span></a></li>
+                <% if (user.role === 'admin') { %>
+                    <li><a href="/admin/dashboard"><i class="fas fa-chart-line"></i><span>Bảng điều khiển</span></a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users"></i><span>Quản lý người dùng</span></a></li>
+                <% } %>
+                <li><a href="/admin/posts"><i class="fas fa-file-alt"></i><span>Quản lý bài đăng</span></a></li>
+                <li><a href="http://localhost:3000/"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
+                <li><a href="/user/logout"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a></li>
+            </ul>
+        </div>
+        <div class="main-content" id="main-content">
+            <h2>Quản Lý Bài Đăng</h2>
+            <% if (error) { %>
+                <p style="color: red;">
+                    <%= error %>
+                </p>
+                <% } %>
+                    <% if (posts && posts.length> 0) { %>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <!-- <th>ID</th> -->
+                                    <th>Tiêu đề</th>
+                                    <th>Hình ảnh</th>
+                                    <th>Giá (triệu/tháng)</th>
+                                    <th>Diện tích (m²)</th>
+                                    <th>Khu vực</th>
+                                    <% if (user.role === 'admin') { %>
+                                        <th>Người đăng</th>
+                                    <% } %>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% posts.forEach(post=> { %>
+                                    <tr>
+                                        <!-- <td>
+                                            <%= post._id %>
+                                        </td> -->
+                                        <td>
+                                            <%= post.title %>
+                                        </td>
+                                        <td>
+                                            <% if (post.images && post.images.length> 0) { %>
+                                                <img src="<%= post.images[0] %>" alt="<%= post.title %>">
+                                                <% } else { %>
+                                                    Không có ảnh
+                                                    <% } %>
+                                        </td>
+                                        <td>
+                                            <%= post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.' ) %>
+                                        </td>
+                                        <td>
+                                            <%= post.area %>
+                                        </td>
+                                        <td>
+                                            <%= post.location %>
+                                        </td>
+                                        <% if (user.role === 'admin') { %>
+                                        <td>
+                                            <%= post.username %>
+                                        </td>
+                                        <% } %>
+                                        <td>
+                                            <a href="/admin/posts/edit/<%= post._id %>" class="action-btn edit-btn">Sửa</a>
+                                            <form action="/admin/posts/delete/<%= post._id %>" method="POST" style="display: inline;">
+                                                <button type="submit" class="action-btn delete-btn" onclick="return confirm('Bạn có chắc muốn xóa bài đăng này?');">Xóa</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                            <p>Chưa có bài đăng nào.</p>
+                            <% } %>
+        </div>
+    </div>
+
+    <script src="/static/js/sidebar.js"></script>
+</body>
+
+</html>

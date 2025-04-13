@@ -1,0 +1,20 @@
+<div class="header">
+    <h1>Thuê Nhà Trọ</h1>
+    <p>Tìm kiếm chỗ ở dễ dàng và nhanh chóng</p>
+</div>
+
+<div class="nav">
+    <a href="http://localhost:3000">Trang Chủ</a>
+    <a href="/post">Đăng Tin</a>
+    <a href="/search">Tìm Nhà Trọ</a>
+    <!-- <a href="#">Liên Hệ</a> -->
+    <% if (typeof username !=='undefined' && username) { %>
+        <div class="admin-dashboard">
+            <a href="/admin/profile">Dashboard</a>
+        </div>
+        <p><font color="white">Xin chào, <%= username %> | <a href="/user/logout">Đăng xuất</a></font></p>
+        <% } else { %>
+            <p><font color="white"><a href="/user/login">Đăng nhập</a> | <a href="/user/register">Đăng ký</a></font></p>
+            <% } %>
+            
+</div>

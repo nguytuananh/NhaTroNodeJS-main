@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.title %> - Chi Tiết Nhà Trọ</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/map.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body>
+    <%- include('partical/menu') %>
+
+    <div class="detail-page">
+        <div class="post-details">
+            <h2><%= post.title %></h2>
+            <div class="post-images">
+                <% if (post.images && post.images.length > 0) { %>
+                    <% post.images.forEach(image => { %>
+                        <img src="<%= image %>" alt="<%= post.title %>">
+                    <% }) %>
+                <% } else { %>
+                    <img src="https://via.placeholder.com/300x150" alt="Không có hình ảnh">
+                <% } %>
+            </div>
+            <p><strong>Khu vực:</strong> <%= post.location %></p>
+            <p><strong>Giá:</strong> <%= post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') %> triệu/tháng</p>
+            <p><strong>Diện tích:</strong> <%= post.area %>m²</p>
+            <p><strong>Mô tả:</strong> <%= post.description %></p>
+            <p><strong>Tiện ích:</strong> <%= post.amenities ? post.amenities.join(', ') : 'Không có' %></p>
+            <p><strong>Người đăng:</strong> <%= post.username %></p>
+            <p><strong>Email liên hệ:</strong> <%= post.email %></p>
+            <p><strong>Ngày đăng:</strong> <%= post.createdAt.toLocaleDateString('vi-VN') %></p>
+        </div>
+        <div class="map-container">
+            <div id="map" 
+                 data-lat="<%= post.coordinates && post.coordinates.latitude ? post.coordinates.latitude : '10.7769' %>"
+                 data-lng="<%= post.coordinates && post.coordinates.longitude ? post.coordinates.longitude : '106.7009' %>"
+                 data-title="<%= post.title %>"
+                 data-location="<%= post.location %>"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 Thuê Nhà Trọ. All rights reserved.</p>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="/static/js/map.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thuê Nhà Trọ - Trang Chủ</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+  <%- include('partical/menu') %>
+
+    <div class="search-section">
+      <form action="/search" method="GET" class="search-section">
+        <h2>Tìm Nhà Trọ Ngay</h2>
+        <input type="text" name="query" placeholder="Nhập khu vực, giá tiền...">
+        <button type="submit">Tìm Kiếm</button>
+      </form>
+    </div>
+
+    <div class="featured-rooms">
+      <% if (posts && posts.length> 0) { %>
+        <% posts.forEach(post=> { %>
+          <div class="room-card">
+            <a href="/post/<%= post._id %>">
+              <img
+                src="<%= post.images && post.images.length > 0 ? post.images[0] : 'https://via.placeholder.com/300x150' %>"
+                alt="<%= post.title %>">
+              <h3>
+                <%= post.title %>
+              </h3>
+            </a>
+            <p>Giá: <%= post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.' ) %> triệu/tháng - Diện tích: <%=
+                  post.area %>m²</p>
+          </div>
+          <% }) %>
+            <% } else { %>
+              <p>Chưa có bài đăng nào.</p>
+              <% } %>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 Thuê Nhà Trọ. All rights reserved.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+#map {
+    height: 300px; /* Chiều cao mini map */
+    width: 100%;
+    margin-top: 10px;
+}

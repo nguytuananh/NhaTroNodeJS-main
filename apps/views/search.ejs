@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tìm Nhà Trọ</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+  <%- include('partical/menu'); %>
+
+    <div class="search-page">
+      <div class="filters">
+        <h2>Bộ lọc</h2>
+        <form action="/search" method="POST">
+          <div class="filter-group">
+            <label for="location">Khu vực:</label>
+            <input type="text" id="location" name="location" placeholder="Nhập khu vực">
+          </div>
+          <div class="filter-group">
+            <label>Giá tiền (triệu/tháng):</label>
+            <input type="number" name="priceFrom" placeholder="Từ" min="0" step="0.5">
+            <input type="number" name="priceTo" placeholder="Đến" min="0" step="0.5">
+          </div>
+          <div class="filter-group">
+            <label>Diện tích (m²):</label>
+            <input type="number" name="areaFrom" placeholder="Từ" min="0">
+            <input type="number" name="areaTo" placeholder="Đến" min="0">
+          </div>
+          <div class="filter-group">
+            <label>Tiện ích:</label>
+            <label><input type="checkbox" name="amenities" value="Wifi"> Wifi</label>
+            <label><input type="checkbox" name="amenities" value="Điều hòa"> Điều hòa</label>
+            <label><input type="checkbox" name="amenities" value="Chỗ để xe"> Chỗ để xe</label>
+          </div>
+          <button type="submit" class="apply-filter">Áp dụng bộ lọc</button>
+        </form>
+      </div>
+
+      <div class="results">
+        <div class="search-bar">
+          <form action="/search" method="POST">
+            <input type="text" name="searchText" placeholder="Tìm kiếm nhà trọ..." value="<%= searchText || '' %>">
+            <button type="submit">Tìm Kiếm</button>
+          </form>
+        </div>
+        <h2>Kết quả tìm kiếm</h2>
+        <div class="room-list">
+          <% if (posts && posts.length> 0) { %>
+            <% posts.forEach(post=> { %>
+              <div class="room-card">
+                <a href="/post/<%= post._id %>">
+                  <img
+                    src="<%= post.images && post.images.length > 0 ? post.images[0] : 'https://via.placeholder.com/300x150' %>"
+                    alt="<%= post.title %>">
+                  <h3>
+                    <%= post.title %>
+                  </h3>
+                  <p>Giá: <%= post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.' ) %> triệu/tháng - Diện tích:
+                      <%= post.area %>m² - <%= post.amenities ? post.amenities.join(', ') : ' Không có tiện ích' %>
+                  </p>
+                </a>
+              </div>
+              <% }) %>
+                <% } else { %>
+                  <p>Không tìm thấy nhà trọ nào phù hợp.</p>
+                  <% } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2025 Thuê Nhà Trọ. All rights reserved.</p>
+    </div>
+</body>
+
+</html>

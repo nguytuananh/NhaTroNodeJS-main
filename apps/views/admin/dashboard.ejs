@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src=""></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+            <ul>
+                <li><a href="/admin/profile"><i class="fas fa-user"></i><span>Quản lý tài khoản</span></a></li>
+                <% if (user.role === 'admin') { %>
+                    <li><a href="/admin/dashboard"><i class="fas fa-chart-line"></i><span>Bảng điều khiển</span></a></li>
+                    <li><a href="/admin/users"><i class="fas fa-users"></i><span>Quản lý người dùng</span></a></li>
+                <% } %>
+                <li><a href="/admin/posts"><i class="fas fa-file-alt"></i><span>Quản lý bài đăng</span></a></li>
+                <li><a href="http://localhost:3000/"><i class="fas fa-home"></i><span>Trang chủ</span></a></li>
+                <li><a href="/user/logout"><i class="fas fa-sign-out-alt"></i><span>Đăng xuất</span></a></li>
+            </ul>
+        </div>
+        <div class="main-content" id="main-content">
+            <h1>Admin Dashboard</h1>
+            <% if (error) { %>
+                <p style="color: red;">
+                    <%= error %>
+                </p>
+                <% } %>
+
+                    <div class="stats">
+                        <div class="stat-card">
+                            <h3>Tổng bài đăng</h3>
+                            <p>
+                                <%= totalPosts %>
+                            </p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Tổng người dùng</h3>
+                            <p>
+                                <%= totalUsers %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="recent-posts">
+                        <h2>Bài đăng gần đây</h2>
+                        <% if (recentPosts && recentPosts.length> 0) { %>
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Tiêu đề</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Giá (triệu/tháng)</th>
+                                        <th>Ngày đăng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% recentPosts.forEach(post=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= post._id %>
+                                            </td>
+                                            <td>
+                                                <%= post.title %>
+                                            </td>
+                                            <td>
+                                                <% if (post.images && post.images.length> 0) { %>
+                                                    <img src="<%= post.images[0] %>" alt="<%= post.title %>">
+                                                    <% } else { %>
+                                                        Không có ảnh
+                                                        <% } %>
+                                            </td>
+                                            <td>
+                                                <%= post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.' ) %>
+                                            </td>
+                                            <td>
+                                                <%= post.createdAt.toLocaleDateString('vi-VN') %>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                            <% } else { %>
+                                <p>Chưa có bài đăng nào.</p>
+                                <% } %>
+                    </div>
+        </div>
+    </div>
+    <script src="/static/js/sidebar.js"></script>
+</body>
+
+</html>
